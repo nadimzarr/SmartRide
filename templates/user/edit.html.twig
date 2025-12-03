@@ -1,0 +1,140 @@
+{% extends 'frontcontroller/frontoffice.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+<div class="form-container">
+    <h1 class="form-title"> Edit User</h1>
+
+    {{ include('user/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <div class="form-actions">
+        <a href="{{ path('app_user_index') }}" class="btn-custom">Back to list</a>
+        {{ include('user/_delete_form.html.twig') }}
+    </div>
+</div>
+
+<style>
+/* Conteneur principal centré */
+.form-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: transform 0.3s;
+}
+
+.form-container:hover {
+    transform: translateY(-5px);
+}
+
+/* Titre */
+.form-title {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Champs du formulaire */
+.e-profile-form input,
+.e-profile-form select,
+.e-profile-form textarea {
+    width: 100%;
+    padding: 15px 45px 15px 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    position: relative;
+}
+
+.e-profile-form input::placeholder {
+    color: #aaa;
+}
+
+/* Focus sur champ */
+.e-profile-form input:focus,
+.e-profile-form select:focus,
+.e-profile-form textarea:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+    outline: none;
+}
+
+/* Bouton Update */
+.e-profile-form button {
+    display: block;
+    width: 60%;
+    margin: 20px auto 0 auto;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #4CAF50, #43A047);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.e-profile-form button:hover {
+    background: linear-gradient(135deg, #43A047, #388E3C);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+/* Boutons actions supplémentaires */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-custom {
+    background-color: #0d6efd;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.3s ease, transform 0.2s;
+}
+
+.btn-custom:hover {
+    background-color: #084298;
+    transform: translateY(-2px);
+}
+
+/* Images */
+img {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .form-container {
+        padding: 25px;
+    }
+    .e-profile-form button {
+        width: 80%;
+    }
+    .form-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+{% endblock %}

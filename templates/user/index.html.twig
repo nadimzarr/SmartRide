@@ -1,0 +1,512 @@
+{% extends 'admincontroller/admindashboard.html.twig' %}
+
+{% block title %}User List{% endblock %}
+
+{% block body %}
+<div class="table-container">
+    <!-- Header -->
+    <div class="table-header-section">
+        <h1>User List</h1>
+        <a href="{{ path('app_user_new') }}" class="btn-create">Create New User</a>
+    </div>
+
+    <!-- Filters Toolbar -->
+    <form method="GET" action="{{ path('app_user_index') }}">
+        <div class="filters-toolbar">
+
+            <div class="filter-group search-group">
+                <div class="search-box">
+                    <i class="bi bi-search"></i>
+                    <input type="text" name="search" placeholder="Search..." value="{{ app.request.get('search') }}">
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">Type</span>
+                <select class="filter-select" name="type">
+                    <option value="">All Types</option>
+                    <option value="Client" {% if app.request.get('type') == 'Client' %}selected{% endif %}>Client</option>
+                    <option value="Admin" {% if app.request.get('type') == 'Admin' %}selected{% endif %}>Admin</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-label">Status</span>
+                <select class="filter-select" name="status">
+                    <option value="">All Status</option>
+                    <option value="ACTIVE" {% if app.request.get('status') == 'ACTIVE' %}selected{% endif %}>Active</option>
+                    <option value="INACTIVE" {% if app.request.get('status') == 'INACTIVE' %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-create">Search</button>
+        </div>
+    </form>
+
+    <!-- Table -->
+    <div class="data-table">
+        <!-- Table Header -->
+        <div class="table-header">
+            <div class="header-cell checkbox-cell">
+                <input type="checkbox" class="select-all">
+            </div>
+            <div class="header-cell sortable"><span>ID</span></div>
+            <div class="header-cell sortable"><span>Last Name</span></div>
+            <div class="header-cell sortable active"><span>First Name</span></div>
+            <div class="header-cell sortable"><span>Email</span></div>
+            <div class="header-cell"><span>Phone</span></div>
+            <div class="header-cell"><span>Type</span></div>
+            <div class="header-cell"><span>Status</span></div>
+            <div class="header-cell"><span>Actions</span></div>
+        </div>
+
+        <!-- Table Body -->
+        <div class="table-body">
+            {% for user in users %}
+                <div class="table-row">
+                    <div class="body-cell checkbox-cell">
+                        <input type="checkbox" class="row-checkbox">
+                    </div>
+                    <div class="body-cell id-cell">{{ user.id }}</div>
+                    <div class="body-cell nom-cell"><strong>{{ user.nom }}</strong></div>
+                    <div class="body-cell prenom-cell">{{ user.prenom }}</div>
+                    <div class="body-cell email-cell">{{ user.email }}</div>
+                    <div class="body-cell phone-cell">{{ user.tel }}</div>
+                    <div class="body-cell type-cell">
+                        <span class="type-badge {{ user.type.value|lower }}">{{ user.type.value }}</span>
+                    </div>
+                    <div class="body-cell status-cell">
+                        <span class="status-badge {{ user.statut.value|lower }}">{{ user.statut.value }}</span>
+                    </div>
+                    <div class="body-cell actions-cell">
+                        <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn-action btn-show">Show</a>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-action btn-edit">Edit</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="no-data"><p>No records found</p></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<style>
+/* Main Container */
+.table-container {
+    max-width: 1400px;
+    margin: 30px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.table-header-section {
+    display: flex;
+    justify-content: center; /* centre horizontalement tous les éléments */
+    align-items: center;    /* centre verticalement */
+    margin-bottom: 25px;
+    text-align: center;
+    gap: 20px; /* espace entre les éléments si tu en as plusieurs */
+}
+
+.table-header-section h1 {
+    color: #1e293b;
+    font-weight: 600;
+    margin: 0;
+    font-size: 24px;
+    text-align: center; /* centre le texte dans le h1 */
+    flex: 1; /* permet au h1 de prendre tout l'espace disponible */
+}
+
+
+.btn-create {
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-create:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* Filters Toolbar */
+.filters-toolbar {
+    background: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.filter-label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.filter-select {
+    padding: 6px 10px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    min-width: 120px;
+}
+
+.btn-reset {
+    padding: 6px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    background: white;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-reset:hover {
+    background: #f1f5f9;
+}
+
+.search-group {
+    margin-left: auto;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-box input {
+    padding: 6px 10px 6px 30px;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    width: 200px;
+    background: white;
+    font-size: 14px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+/* Data Table */
+.data-table {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Table Header */
+.table-header {
+    display: grid;
+    grid-template-columns: 50px 80px 1fr 1fr 1.5fr 1fr 1fr 1fr 150px;
+    gap: 15px;
+    padding: 15px 20px;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+    align-items: center;
+}
+
+.header-cell {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.header-cell.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.header-cell.sortable:hover {
+    color: #1e293b;
+}
+
+.header-cell.active {
+    color: #3b82f6;
+}
+
+.header-cell i {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.checkbox-cell {
+    display: flex;
+    justify-content: center;
+}
+
+.select-all, .row-checkbox {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #cbd5e1;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.row-checkbox:checked {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* Table Body */
+.table-body {
+    min-height: 300px;
+}
+
+.table-row {
+    display: grid;
+    grid-template-columns: 50px 80px 1fr 1fr 1.5fr 1fr 1fr 1fr 150px;
+    gap: 15px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.table-row:hover {
+    background: #f8fafc;
+}
+
+.table-row:last-child {
+    border-bottom: none;
+}
+
+.body-cell {
+    font-size: 14px;
+    color: #374151;
+}
+
+.id-cell {
+    color: #64748b;
+    font-weight: 500;
+}
+
+.nom-cell strong {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.prenom-cell {
+    color: #374151;
+    font-weight: 500;
+}
+
+.email-cell {
+    color: #3b82f6;
+}
+
+.phone-cell {
+    color: #64748b;
+}
+
+/* Badges for Type and Status */
+.type-badge, .status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.type-badge.client {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+.type-badge.admin {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+}
+
+.status-badge.active {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.status-badge.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+}
+
+/* Actions */
+.actions-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-show {
+    background: #10b981;
+    color: white;
+}
+
+.btn-edit {
+    background: #f59e0b;
+    color: white;
+}
+
+.btn-action:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* No Data */
+.no-data {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .table-header,
+    .table-row {
+        grid-template-columns: 40px 60px 1fr 1fr 1fr 100px 100px 120px;
+        gap: 10px;
+    }
+    
+    .header-cell:nth-child(5),
+    .body-cell:nth-child(5) {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .table-header,
+    .table-row {
+        grid-template-columns: 40px 60px 1fr 1fr 100px 100px 120px;
+        gap: 10px;
+    }
+    
+    .header-cell:nth-child(4),
+    .body-cell:nth-child(4),
+    .header-cell:nth-child(5),
+    .body-cell:nth-child(5) {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .filters-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    
+    .filter-group {
+        justify-content: space-between;
+    }
+    
+    .search-group {
+        margin-left: 0;
+    }
+    
+    .search-box input {
+        width: 100%;
+    }
+    
+    .table-header,
+    .table-row {
+        grid-template-columns: 30px 1fr 1fr 80px;
+        gap: 8px;
+        padding: 12px 15px;
+    }
+    
+    .header-cell:nth-child(n+4):not(:last-child),
+    .body-cell:nth-child(n+4):not(:last-child) {
+        display: none;
+    }
+    
+    .actions-cell {
+        flex-direction: column;
+        gap: 4px;
+    }
+    
+    .btn-action {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+}
+
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.querySelector('.search-box input');
+    const typeSelect = document.querySelector('select[name="type"]');
+    const statusSelect = document.querySelector('select[name="status"]');
+    const tableBody = document.querySelector('.table-body');
+
+    function fetchUsers() {
+        const params = new URLSearchParams({
+            search: searchInput.value,
+            type: typeSelect.value,
+            status: statusSelect.value
+        });
+
+        fetch(`{{ path('app_user_index') }}?${params}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableBody.innerHTML = html;
+        });
+    }
+
+    searchInput.addEventListener('input', fetchUsers);
+    typeSelect.addEventListener('change', fetchUsers);
+    statusSelect.addEventListener('change', fetchUsers);
+});
+</script>
+
+{% endblock %}
