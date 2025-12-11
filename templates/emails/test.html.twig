@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        .content {
+            padding: 30px;
+        }
+        .content h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        .info-box {
+            background-color: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .footer {
+            background-color: #f5f5f5;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 1px solid #ddd;
+        }
+        .success-badge {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 SmartRide</h1>
+            <p>Test d'envoi d'e-mail</p>
+        </div>
+
+        <div class="content">
+            <h2>Bienvenue! 👋</h2>
+
+            <p>Cet e-mail de test confirme que votre configuration Gmail SMTP fonctionne correctement.</p>
+
+            <div class="info-box">
+                <strong>✓ Configuration validée</strong><br>
+                Les e-mails sont maintenant envoyés en <strong>mode synchrone</strong> (immédiatement).
+            </div>
+
+            <h3>Détails du test:</h3>
+            <ul>
+                <li><strong>Destinataire:</strong> {{ recipientEmail }}</li>
+                <li><strong>Date/Heure:</strong> {{ timestamp.format('d/m/Y H:i:s') }}</li>
+                <li><strong>Mode d'envoi:</strong> Synchrone (immédiat)</li>
+                <li><strong>Transport:</strong> Gmail SMTP</li>
+            </ul>
+
+            <div class="success-badge">✓ E-mail envoyé avec succès!</div>
+
+            <h3>Prochaines étapes:</h3>
+            <ol>
+                <li>Vérifiez que cet e-mail est bien arrivé dans votre boîte de réception</li>
+                <li>Testez la fonctionnalité "reset-password" de votre application</li>
+                <li>Vérifiez les logs: <code>tail -f var/log/dev.log</code></li>
+            </ol>
+
+            <h3>Dépannage:</h3>
+            <p>Si vous ne recevez pas cet e-mail:</p>
+            <ul>
+                <li>Vérifiez votre dossier "Spam" ou "Promotions"</li>
+                <li>Vérifiez la configuration .env.local</li>
+                <li>Vérifiez que le mot de passe d'application Gmail est correct</li>
+                <li>Consultez les logs: <code>var/log/dev.log</code></li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <p>SmartRide - Système de gestion de transport</p>
+            <p>Cet e-mail a été généré automatiquement. Veuillez ne pas répondre.</p>
+            <p>© 2025 SmartRide. Tous droits réservés.</p>
+        </div>
+    </div>
+</body>
+</html>
