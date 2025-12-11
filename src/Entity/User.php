@@ -7,9 +7,13 @@ use App\Enum\Type;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements   UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -74,17 +78,7 @@ private ?string $email = null;
         return $this->id;
     }
 
-    public function getIduser(): ?int
-    {
-        return $this->iduser;
-    }
-
-    public function setIduser(int $iduser): static
-    {
-        $this->iduser = $iduser;
-
-        return $this;
-    }
+    
 
     public function getPassword(): ?string
     {
@@ -168,4 +162,21 @@ private ?string $email = null;
 
         return $this;
     }
+      //
+      public function getUserIdentifier(): string
+{
+    return (string) $this->email;
+}
+
+public function getRoles(): array
+{
+    return ['ROLE_USER'];
+}
+
+public function eraseCredentials(): void
+{
+    // rien à effacer
+}
+
+
 }

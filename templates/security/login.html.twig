@@ -1,0 +1,148 @@
+{% extends 'frontcontroller/frontoffice.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<form class="login-form" method="post" action="{{ path('app_login') }}">
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+    <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+    <a href="{{ path('app_user_new') }}" class="btn-create">Create Account</a>
+    <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+</form>
+<style>
+/* --- Formulaire login professionnel --- */
+/* --- Bouton Create Account --- */
+.btn-create {
+    display: inline-block;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #28a745, #20c154);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px; /* éloigner du bouton login */
+    box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
+}
+
+.btn-create:hover {
+    background: linear-gradient(135deg, #20c154, #28a745);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 10px 22px rgba(40, 167, 69, 0.45);
+}
+
+/* --- Formulaire login amélioré --- */
+form.login-form {
+    background: #ffffff;
+    padding: 55px 45px;        /* plus grand */
+    border-radius: 18px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    max-width: 500px;          /* plus large */
+    margin: 70px auto;         /* plus d'espace autour */
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+}
+
+form.login-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22);
+}
+
+/* Titre */
+form.login-form h1 {
+    margin-bottom: 40px;   /* espace plus grand */
+    color: #333;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+/* Labels plus loin */
+form.login-form label {
+    display: block;
+    text-align: left;
+    margin-bottom: 10px;   /* distance augmentée */
+    margin-top: 15px;      /* espace AVANT label */
+    font-weight: 600;
+    color: #444;
+    font-size: 15px;
+}
+
+/* Inputs plus grands et espacés */
+form.login-form input[type="email"],
+form.login-form input[type="password"] {
+    width: 100%;
+    padding: 15px 18px;        /* champs plus grands */
+    margin-bottom: 30px;       /* plus d’espace entre les inputs */
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+form.login-form input:focus {
+    border-color: #2575fc;
+    box-shadow: 0 0 10px rgba(37,117,252,0.3);
+    outline: none;
+}
+
+/* Bouton Login */
+form.login-form .btn {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    border: none;
+    background: #2575fc;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;   /* espace depuis le password */
+}
+
+form.login-form .btn:hover {
+    background: #1a5cd1;
+    box-shadow: 0 7px 20px rgba(37,117,252,0.35);
+}
+
+/* Alerte */
+form.login-form .alert {
+    background: #f8d7da;
+    color: #842029;
+    padding: 12px 15px;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    font-size: 14px;
+    text-align: left;
+}
+
+@media (max-width: 480px) {
+    form.login-form {
+        padding: 35px 25px;
+        margin: 25px;
+    }
+}
+
+
+</style>
+{% endblock %}

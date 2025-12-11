@@ -10,12 +10,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+
 
 
 
 #[Route('/user')]
 final class UserController extends AbstractController
 {
+   
+
     #[Route(name: 'app_user_index', methods: ['GET'])]
 public function index(Request $request, UserRepository $userRepository): Response
 {
@@ -58,26 +66,30 @@ public function index(Request $request, UserRepository $userRepository): Respons
         'users' => $users,
     ]);
 }
+   #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+   public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+{
+    $user = new User();
+    $form = $this->createForm(UserType::class, $user);
+    $form->handleRequest($request);
 
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $plainPassword = $form->get('password')->getData();
+        $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+        $user->setPassword($hashedPassword);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($user);
-            $entityManager->flush();
+        $entityManager->persist($user);
+        $entityManager->flush();
 
-            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('app_user_index');
     }
+
+    return $this->render('user/new.html.twig', [
+        'user' => $user,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
@@ -115,6 +127,6 @@ public function index(Request $request, UserRepository $userRepository): Respons
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-    
+   
     
 }
