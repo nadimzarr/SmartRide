@@ -1,0 +1,103 @@
+{% extends 'admincontroller/admindashboard.html.twig' %}
+
+{% block title %}Nouvelle Réponse{% endblock %}
+
+{% block body %}
+    <h1 style="
+        text-align: center;
+        margin-top: 20px;
+        font-size: 36px;
+        font-weight: 700;
+        color: #2c3e50;
+    ">Créer une nouvelle réponse</h1>
+
+    <div style="max-width:600px; margin: 30px auto; padding: 20px; background: #f7f7f7; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        {{ form_start(form) }}
+
+            {# Champs du formulaire alignés #}
+            <div style="display:flex; flex-direction:column; gap:15px;">
+                {% for field in form %}
+                    <div style="display:flex; flex-direction:column;">
+                        {{ form_label(field) }}
+                        {{ form_widget(field, {'attr': {'style':'padding:10px; border-radius:5px; border:1px solid #ccc;'}}) }}
+                        {{ form_errors(field) }}
+                    </div>
+                {% endfor %}
+            </div>
+
+            {# Bouton Enregistrer centré #}
+            <div style="text-align:center; margin-top:20px;">
+                <button type="submit" 
+                    style="
+                        padding:12px 28px;
+                        background: linear-gradient(135deg, #2c3e50, #2c3e50);
+                        color:white;
+                        font-size:16px;
+                        font-weight:600;
+                        border-radius:10px;
+                        border:none;
+                        cursor:pointer;
+                        box-shadow:0 4px 10px rgba(0,0,0,0.15);
+                        transition: transform 0.2s ease, box-shadow 0.2s ease;
+                    "
+                    onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+                >
+                    Enregistrer
+                </button>
+            </div>
+
+        {{ form_end(form) }}
+    </div>
+    
+
+
+<script>
+    const select = document.getElementById('reponse_reclamation');
+    const nomInput = document.getElementById('reponse_nom');
+    const prenomInput = document.getElementById('reponse_prenom');
+
+    const reclamations = {
+        {% for rec in form.reclamation.vars.choices %}
+            "{{ rec.value }}": {
+                nom: "{{ rec.data.nom|e('js') }}",
+                prenom: "{{ rec.data.prenom|e('js') }}"
+            },
+        {% endfor %}
+    };
+
+    select.addEventListener('change', function() {
+        const selected = this.value;
+        if (reclamations[selected]) {
+            nomInput.value = reclamations[selected].nom;
+            prenomInput.value = reclamations[selected].prenom;
+        } else {
+            nomInput.value = '';
+            prenomInput.value = '';
+        }
+    });
+</script>
+
+
+    {# Bouton Retour à la liste #}
+    <div style="text-align:center; margin-top:20px;">
+        <a href="{{ path('app_reponse_index') }}"
+           style="
+                display: inline-block;
+                padding: 12px 28px;
+                background: linear-gradient(135deg, #2c3e50, #2c3e50);
+                color: white;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 10px;
+                text-decoration: none;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+           "
+           onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+           onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+        >
+            ⬅️ Retour à la liste
+        </a>
+    </div>
+{% endblock %}

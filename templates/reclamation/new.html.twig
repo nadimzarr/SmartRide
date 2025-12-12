@@ -1,0 +1,177 @@
+{% extends 'frontcontroller/frontoffice.html.twig' %}
+
+{% block title %}New Reclamation{% endblock %}
+
+{% block body %}
+
+<div style="text-align: center; margin-top: 50px;">
+    <h1 style="
+        font-size: 32px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: 12px 20px;
+        border-radius: 15px;
+        background-color: #2c3e50;
+        color: #1abc9c;
+        display: inline-block;
+        animation: pulse 2s ease-in-out 1 forwards, colorShift 4s ease-in-out 1 forwards;
+    ">
+        Créer une nouvelle réclamation
+    </h1>
+</div>
+
+<style>
+@keyframes pulse {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.05);}
+    100% {transform: scale(1);}
+}
+
+@keyframes colorShift {
+    0% {color: #1abc9c;}
+    50% {color: #16a085;}
+    100% {color: #1abc9c;}
+}
+
+.reclamation-form .form-group {
+    margin-bottom: 20px;
+}
+
+.reclamation-form label {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.reclamation-form input,
+.reclamation-form textarea,
+.reclamation-form select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.reclamation-form input:focus,
+.reclamation-form textarea:focus,
+.reclamation-form select:focus {
+    outline: none;
+    border-color: #1abc9c;
+    box-shadow: 0 0 0 3px rgba(26, 188, 156, 0.1);
+}
+
+.reclamation-form input.is-invalid,
+.reclamation-form textarea.is-invalid,
+.reclamation-form select.is-invalid {
+    border-color: #e74c3c;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
+}
+
+.reclamation-form .error-message {
+    color: #fff;
+    background-color: #e74c3c;
+    font-size: 13px;
+    padding: 8px 10px;
+    border-radius: 0 0 8px 8px;
+    margin-top: 0;
+    font-weight: 500;
+}
+
+.reclamation-form .error-message ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.reclamation-form .error-message li {
+    margin: 0;
+}
+</style>
+
+<div id="reclamation-form-container" class="reclamation-form" style="max-width:600px; margin:0 auto; padding:20px;">
+    {{ form_start(form, {'attr': {'id': 'reclamation-form'}}) }}
+        
+    {% for field in form %}
+        {% if field.vars.name != '_token' %}
+            <div class="form-group">
+                {{ form_label(field) }}
+                {{ form_widget(field, {
+                    'attr': {
+                        'class': (field.vars.errors|length > 0 ? 'is-invalid' : ''),
+                        'placeholder': field.vars.attr.placeholder|default(''),
+                        'id': 'field_' ~ field.vars.name
+                    }
+                }) }}
+                {% if field.vars.errors|length > 0 %}
+                    <div class="error-message" id="error_{{ field.vars.name }}">
+                        {% for error in field.vars.errors %}
+                            {{ error.message }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+        
+    <div style="display:flex; justify-content:center; gap:15px; margin-top:30px; flex-wrap:wrap;">
+        <button type="submit"
+            style="
+                padding:12px 28px;
+                background: linear-gradient(135deg, #1abc9c, #16a085);
+                color:white;
+                font-size:18px;
+                font-weight:600;
+                border-radius:10px;
+                border:none;
+                cursor:pointer;
+                box-shadow:0 4px 10px rgba(0,0,0,0.15);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                text-align:center;
+            "
+            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+        >
+            Ajouter
+        </button>
+
+        <a href="{{ path('app_reclamation_index') }}"
+            style="
+                display:inline-block;
+                padding:12px 28px;
+                background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+                color:white;
+                font-size:18px;
+                font-weight:600;
+                border-radius:10px;
+                text-decoration:none;
+                box-shadow:0 4px 10px rgba(0,0,0,0.15);
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+                text-align:center;
+            "
+            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+        >
+            Retour à la liste
+        </a>
+    </div>
+
+    {{ form_end(form) }}
+</div>
+
+{# JS pour scroll automatique vers le premier champ avec erreur #}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const firstError = document.querySelector('.is-invalid');
+    if (firstError) {
+        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        firstError.focus();
+    }
+});
+</script>
+
+{% endblock %}

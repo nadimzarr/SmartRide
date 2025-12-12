@@ -1,0 +1,73 @@
+{% extends 'frontcontroller/frontoffice.html.twig' %}
+
+{% block title %}Réponse à la Réclamation{% endblock %}
+
+{% block body %}
+<div style="max-width:800px; margin:50px auto; padding:30px; background:#ecf0f1; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">
+
+    <h1 style="
+        text-align:center;
+        color:#2c3e50;
+        margin-bottom:30px;
+        font-size:32px;
+        font-weight:700;
+        letter-spacing:1px;
+        text-transform: uppercase;
+        animation: pulse 2s ease-in-out 1 forwards;
+    ">
+        Réponse à la Réclamation
+    </h1>
+
+    <style>
+    @keyframes pulse {
+        0% {transform: scale(1);}
+        50% {transform: scale(1.03);}
+        100% {transform: scale(1);}
+    }
+    .info-label { font-weight:600; color:#34495e; }
+    .info-value { margin-bottom:15px; color:#2c3e50; font-size:16px; }
+    .reponse-box {
+        margin-top:20px;
+        padding:20px;
+        background:#1abc9c;
+        color:white;
+        border-radius:12px;
+        box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease;
+    }
+    .reponse-box:hover { transform: scale(1.02); }
+    .btn-back {
+        padding:12px 28px;
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color:white;
+        border-radius:10px;
+        text-decoration:none;
+        font-weight:600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .btn-back:hover {
+        transform: scale(1.05);
+        box-shadow:0 6px 15px rgba(0,0,0,0.25);
+    }
+    </style>
+
+    <p><span class="info-label">Nom :</span> <span class="info-value">{{ reclamation.nom }} {{ reclamation.prenom }}</span></p>
+    <p><span class="info-label">Type :</span> <span class="info-value">{{ reclamation.typeReclamation.value }}</span></p>
+    <p><span class="info-label">Message :</span> <span class="info-value">{{ reclamation.message }}</span></p>
+    <p><span class="info-label">Date de réclamation :</span> <span class="info-value">{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('d/m/Y') : '' }}</span></p>
+
+    {% if reponse %}
+        <div class="reponse-box">
+            <p><strong>Réponse :</strong> {{ reponse.contenu }}</p>
+            <p><strong>Date de réponse :</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : '' }}</p>
+        </div>
+    {% else %}
+        <p style="color:#e74c3c; font-weight:600; text-align:center; margin-top:20px;">Aucune réponse pour cette réclamation pour l'instant.</p>
+    {% endif %}
+
+    <div style="text-align:center; margin-top:40px;">
+        <a href="{{ path('app_reclamation_index') }}" class="btn-back">Retour aux réclamations</a>
+    </div>
+
+</div>
+{% endblock %}
