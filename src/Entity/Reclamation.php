@@ -38,11 +38,11 @@ private ?string $nom = null;
     private ?TypeReclamation $type_reclamation = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le message est obligatoire.")]
-    #[BadWords(message: "Votre message contient des mots interdits.")]
+    #[Assert\NotBlank(message: "La description est obligatoire.")]
+    #[BadWords(message: "Votre description contient des mots interdits.")]
     #[Assert\Length(
         min: 10,
-        minMessage: "Le message doit contenir au moins {{ limit }} caractères."
+        minMessage: "La description doit contenir au moins {{ limit }} caractères."
     )]
     private ?string $message = null;
 

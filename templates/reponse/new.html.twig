@@ -1,5 +1,4 @@
 {% extends 'admincontroller/admindashboard.html.twig' %}
-
 {% block title %}Nouvelle Réponse{% endblock %}
 
 {% block body %}
@@ -13,22 +12,66 @@
 
     <div style="max-width:600px; margin: 30px auto; padding: 20px; background: #f7f7f7; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
         {{ form_start(form) }}
-
+            
             {# Champs du formulaire alignés #}
             <div style="display:flex; flex-direction:column; gap:15px;">
                 {% for field in form %}
                     <div style="display:flex; flex-direction:column;">
                         {{ form_label(field) }}
+                        
                         {{ form_widget(field, {'attr': {'style':'padding:10px; border-radius:5px; border:1px solid #ccc;'}}) }}
-                        {{ form_errors(field) }}
+                        
+                        {# Ajouter le bouton de génération APRÈS le champ contenu #}
+                        {% if field.vars.name == 'contenu' %}
+                            <small style="color: #666; font-size: 12px; margin-top: 8px; display: block;">
+                                💡 Sélectionnez une réclamation, puis cliquez sur le bouton pour générer automatiquement une réponse professionnelle.
+                            </small>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                                <button 
+                                    type="button"
+                                    id="btn-generer-reponse" 
+                                    style="
+                                        padding: 8px 16px;
+                                        background: linear-gradient(135deg, #4caf50, #45a049);
+                                        color: white;
+                                        font-size: 14px;
+                                        font-weight: 600;
+                                        border-radius: 8px;
+                                        border: none;
+                                        cursor: pointer;
+                                        box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+                                        transition: transform 0.2s ease, box-shadow 0.2s ease;
+                                    "
+                                    onmouseover="if(!this.disabled) { this.style.transform='scale(1.05)'; this.style.boxShadow='0 5px 12px rgba(0,0,0,0.25)'; }"
+                                    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 3px 8px rgba(0,0,0,0.15)';"
+                                    disabled
+                                >
+                                    ✨ Générer avec IA
+                                </button>
+                                <div id="loading-spinner" style="display: none;">
+                                    <div style="
+                                        width: 20px;
+                                        height: 20px;
+                                        border: 3px solid #f3f3f3;
+                                        border-top: 3px solid #4caf50;
+                                        border-radius: 50%;
+                                        animation: spin 1s linear infinite;
+                                    "></div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        
+                        <div style="color:red; font-size:13px; margin-top:5px;">
+                             {{ form_errors(field) }}
+                        </div>
                     </div>
                 {% endfor %}
             </div>
 
             {# Bouton Enregistrer centré #}
             <div style="text-align:center; margin-top:20px;">
-                <button type="submit" 
-                    style="
+                <button type="submit"
+                     style="
                         padding:12px 28px;
                         background: linear-gradient(135deg, #2c3e50, #2c3e50);
                         color:white;
@@ -49,36 +92,152 @@
 
         {{ form_end(form) }}
     </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #btn-generer-reponse:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #cccccc !important;
+        }
+        
+        .notification-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            min-width: 300px;
+            padding: 15px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-size: 14px;
+            font-weight: 500;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+   
+    <script>
     
-
-
-<script>
-    const select = document.getElementById('reponse_reclamation');
-    const nomInput = document.getElementById('reponse_nom');
-    const prenomInput = document.getElementById('reponse_prenom');
-
     const reclamations = {
         {% for rec in form.reclamation.vars.choices %}
             "{{ rec.value }}": {
                 nom: "{{ rec.data.nom|e('js') }}",
-                prenom: "{{ rec.data.prenom|e('js') }}"
+                prenom: "{{ rec.data.prenom|e('js') }}",
+                type: "{{ rec.data.typeReclamation.value|e('js') }}",
+                message: "{{ rec.data.message|e('js') }}",
+                date: "{{ rec.data.dateReclamation|date('d/m/Y') }}"
             },
         {% endfor %}
     };
 
+    const select = document.getElementById('reponse_reclamation');
+    const nomInput = document.getElementById('reponse_nom');
+    const prenomInput = document.getElementById('reponse_prenom');
+    const btnGenerer = document.getElementById('btn-generer-reponse');
+
+    
     select.addEventListener('change', function() {
         const selected = this.value;
         if (reclamations[selected]) {
             nomInput.value = reclamations[selected].nom;
             prenomInput.value = reclamations[selected].prenom;
+            // Activer le bouton de génération
+            btnGenerer.disabled = false;
         } else {
             nomInput.value = '';
             prenomInput.value = '';
+            btnGenerer.disabled = true;
         }
     });
-</script>
 
+    
+    async function genererReponse() {
+        const reclamationId = select.value;
+        
+        if (!reclamationId) {
+            showNotification('Veuillez sélectionner une réclamation', 'error');
+            return;
+        }
 
+        const textarea = document.getElementById('reponse_contenu');
+        const loadingSpinner = document.getElementById('loading-spinner');
+        
+        // Désactiver le bouton et afficher le chargement
+        btnGenerer.disabled = true;
+        loadingSpinner.style.display = 'inline-block';
+        textarea.value = 'Génération de la réponse en cours...';
+        
+        try {
+            const response = await fetch(`/api/reclamation/generer-reponse/${reclamationId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                textarea.value = data.reponse;
+              
+            } else {
+                textarea.value = '';
+                
+            }
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            textarea.value = '';
+            showNotification('❌ Une erreur est survenue lors de la génération', 'error');
+        } finally {
+            btnGenerer.disabled = false;
+            loadingSpinner.style.display = 'none';
+        }
+    }
+
+    // Fonction pour afficher des notifications
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast';
+        notification.textContent = message;
+        
+        if (type === 'success') {
+            notification.style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+            notification.style.color = 'white';
+        } else if (type === 'error') {
+            notification.style.background = 'linear-gradient(135deg, #f44336, #d32f2f)';
+            notification.style.color = 'white';
+        }
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.3s';
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    // Écouter le clic sur le bouton de génération
+    btnGenerer.addEventListener('click', genererReponse);
+    </script>
+      
     {# Bouton Retour à la liste #}
     <div style="text-align:center; margin-top:20px;">
         <a href="{{ path('app_reponse_index') }}"

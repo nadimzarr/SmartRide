@@ -19,13 +19,13 @@ final class ReponseController extends AbstractController
     #[Route(name: 'app_reponse_index', methods: ['GET'])]
 public function index(Request $request, ReponseRepository $reponseRepository): Response
 {
-    // Récupérer le texte recherché
+    
     $q = $request->query->get('q', '');
 
-    // Si c'est une requête AJAX -> retourner JSON
+    
     if ($request->isXmlHttpRequest()) {
 
-        $reponses = $reponseRepository->search($q); // méthode à créer
+        $reponses = $reponseRepository->search($q); 
 
         $data = [];
         foreach ($reponses as $r) {
@@ -45,7 +45,7 @@ public function index(Request $request, ReponseRepository $reponseRepository): R
         return $this->json($data);
     }
 
-    // Requête normale -> charger tout
+    
     return $this->render('reponse/index.html.twig', [
         'reponses' => $reponseRepository->findAll(),
     ]);

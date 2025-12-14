@@ -22,7 +22,7 @@ class ReponseType extends AbstractType
         $builder
              ->add('contenu', TextareaType::class, [
         'label' => 'Contenu',
-        'required' => false,       // obligatoire
+        'required' => false,       
         'attr' => ['class' => 'form-control'],
     ])
     
@@ -42,7 +42,7 @@ class ReponseType extends AbstractType
                 'query_builder' => function(EntityRepository $er) {
                 return $er->createQueryBuilder('r')
                           ->leftJoin('r.reponse', 'rep')
-                          ->where('rep.id IS NULL'); // ne récupérer que les réclamations sans réponse
+                          ->where('rep.id IS NULL'); 
             },
             ])
 

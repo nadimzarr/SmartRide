@@ -17,8 +17,16 @@ class BadWordsValidator extends ConstraintValidator
     {
         if (!$value) return;
 
+        // Convertir le texte en minuscules pour la comparaison
+        $texteLowercase = mb_strtolower($value);
+
         foreach ($this->filter->getBadWords() as $word) {
-            if (stripos($value, $word) !== false) {
+            // Créer un pattern qui vérifie les mots entiers uniquement
+            // \b = limite de mot (word boundary)
+            $pattern = '/\b' . preg_quote(mb_strtolower($word), '/') . '\b/u';
+            
+            // Vérifier si le mot entier existe
+            if (preg_match($pattern, $texteLowercase)) {
                 $this->context->buildViolation($constraint->message)
                     ->setParameter('{{ word }}', $word)
                     ->addViolation();

@@ -8,16 +8,48 @@
     <h1 style="text-align:center; font-size:36px; font-weight:700; color:#2c3e50; margin-bottom:30px;">
         Liste des réponses
     </h1>
-<input type="text" id="searchReponse" placeholder="Rechercher une réponse..."
-       class="form-control mb-3"
-       style="
-            border: 2px solid #1e40af;
-            border-radius: 8px;
-            padding: 10px;
-            font-weight: 500;
-            color: #1e40af;
-       ">
-
+<div style="display: flex; gap: 15px; align-items: center; margin-bottom: 25px;">
+        
+        <div style="flex: 1;">
+            <input type="text" id="searchReponse" placeholder="Rechercher une réponse..."
+                   class="form-control"
+                   style="
+                        border: 2px solid #1e40af;
+                        border-radius: 8px;
+                        padding: 10px 15px;
+                        font-weight: 500;
+                        color: #1e40af;
+                        width: 100%;
+                        height: 45px;
+                   ">
+        </div>
+        
+       
+        <div>
+            <a href="{{ path('app_reponse_new') }}"
+               style="
+                    display: inline-block;
+                    padding: 10px 25px;
+                    background: linear-gradient(135deg, #2c3e50, #34495e);
+                    color: white;
+                    font-size: 16px;
+                    font-weight: 600;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    white-space: nowrap;
+                    height: 45px;
+                    line-height: 25px;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+               "
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 8px rgba(0,0,0,0.15)';"
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 6px rgba(0,0,0,0.1)';">
+                Répondre au client
+            </a>
+        </div>
+    </div>
 <div id="resultsReponse" style="
             background: #f8fafc;
             border: 1px solid #1e40af;
@@ -107,12 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 
-    <div style="text-align:center; margin-top:30px;">
-        <a href="{{ path('app_reponse_new') }}"
-           style="display:inline-block; padding:12px 28px; background:#2c3e50; color:white; font-size:16px; font-weight:600; border-radius:8px; text-decoration:none;">
-           ➕ Créer une nouvelle réponse
-        </a>
-    </div>
+   
 
 </div>
 {% endblock %}

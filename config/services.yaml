@@ -11,7 +11,12 @@ services:
         autowire: true      # Inject dependencies automatically
         autoconfigure: true # Automatically register commands, subscribers, etc.
         public: false       # Default public value
-
+    App\Service\InfoBipService:
+        arguments:
+            $apiKey: '%env(INFOBIP_API_KEY)%'
+            $baseUrl: '%env(INFOBIP_BASE_URL)%'
+            $senderId: '%env(INFOBIP_SENDER_ID)%'
+            $logger: '@logger'
     # Ton service BadWordsFilter
     Vendor\BadWordsBundle\Service\BadWordsFilter:
         public: true

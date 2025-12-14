@@ -57,7 +57,7 @@ class ReclamationType extends AbstractType
 
             ])
             ->add('message',TextareaType::class, [
-    'label' => 'Message',
+    'label' => 'Description',
     'attr' => ['class' => 'form-control','placeholder' => 'Décrivez le problème en détails...'],
     
     'required' =>false, 
@@ -66,7 +66,7 @@ class ReclamationType extends AbstractType
     'widget' => 'single_text',
     'html5' => true,
     'label' => 'Date de réclamation',
-    'data' => new \DateTime('today'), // pré-remplit le champ avec la date du jour
+    'data' => new \DateTime('today'), 
 ])
         ;
     }

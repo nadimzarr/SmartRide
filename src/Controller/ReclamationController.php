@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Controller;
-
+use App\Service\InfoBipService;
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
 use App\Repository\ReclamationRepository;
@@ -18,13 +18,10 @@ final class ReclamationController extends AbstractController
     #[Route(name: 'app_reclamation_index', methods: ['GET'])]
     public function index(Request $request, ReclamationRepository $reclamationRepository): Response
     {
-        // Récupération du texte de recherche
         $q = $request->query->get('q', '');
 
-        // Recherche dynamique via repository
         $reclamations = $reclamationRepository->findByAllFields($q);
 
-        // Si requête AJAX : renvoie JSON pour le JS
         if ($request->isXmlHttpRequest()) {
             $data = [];
             foreach ($reclamations as $rec) {
@@ -40,14 +37,13 @@ final class ReclamationController extends AbstractController
             return new JsonResponse($data);
         }
 
-        // Requête normale : rend la page complète
         return $this->render('reclamation/index.html.twig', [
             'reclamations' => $reclamations,
         ]);
     }
 
   #[Route('/new', name: 'app_reclamation_new', methods: ['GET', 'POST'])]
-public function new(Request $request, EntityManagerInterface $entityManager, \Vendor\BadWordsBundle\Service\BadWordsFilter $filter): Response
+public function new(Request $request, EntityManagerInterface $entityManager, BadWordsFilter $filter, InfoBipService $smsService): Response
 {
     $reclamation = new Reclamation();
     $form = $this->createForm(ReclamationType::class, $reclamation);
@@ -55,10 +51,9 @@ public function new(Request $request, EntityManagerInterface $entityManager, \Ve
 
     if ($form->isSubmitted()) {
 
-        // Vérifie si le message contient des bad words
-        // On utilise ?? '' pour s'assurer que la valeur est une string
+      
         if ($filter->containsBadWords($reclamation->getMessage() ?? '')) {
-            // Ajoute l'erreur directement sur le champ 'message'
+            
             $form->get('message')->addError(
                 new \Symfony\Component\Form\FormError('Votre message contient des mots interdits.')
             );
@@ -67,8 +62,9 @@ public function new(Request $request, EntityManagerInterface $entityManager, \Ve
         if ($form->isValid()) {
             $entityManager->persist($reclamation);
             $entityManager->flush();
-
-            // Message flash
+            
+              $smsService->sendReclamationNotification($reclamation, '21656521654');
+            
             $this->addFlash('success', 'Votre réclamation a été ajoutée avec succès !');
 
             return $this->redirectToRoute('app_reclamation_index');
@@ -114,7 +110,7 @@ public function new(Request $request, EntityManagerInterface $entityManager, \Ve
     #[Route('/{id}', name: 'app_reclamation_delete', methods: ['POST'])]
     public function delete(Request $request, Reclamation $reclamation, EntityManagerInterface $entityManager): Response
     {
-        // Correction CSRF
+        
         if ($this->isCsrfTokenValid('delete'.$reclamation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($reclamation);
             $entityManager->flush();
