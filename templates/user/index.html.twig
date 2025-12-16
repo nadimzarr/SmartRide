@@ -8,6 +8,7 @@
     <div class="table-header-section">
         <h1>User List</h1>
         
+        
     </div>
 
     <!-- Filters Toolbar -->
@@ -36,6 +37,7 @@
                     <option value="">All Status</option>
                     <option value="ACTIVE" {% if app.request.get('status') == 'ACTIVE' %}selected{% endif %}>Active</option>
                     <option value="INACTIVE" {% if app.request.get('status') == 'INACTIVE' %}selected{% endif %}>Inactive</option>
+                    <option value="BANNED" {% if app.request.get('status') == 'BANNED' %}selected{% endif %}>Banned</option>
                 </select>
             </div>
 
@@ -80,7 +82,17 @@
                     </div>
                     <div class="body-cell actions-cell">
                         <a href="{{ path('app_user_show', {'id': user.id}) }}" class="btn-action btn-show">Show</a>
-                        <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-action btn-edit">Edit</a>
+                        <a href="{{ path('app_user_edit', {'id': user.id, 'from': 'userlist'}) }}" class="btn-action btn-edit">Edit</a>
+
+                        {# Bouton Bloquer/Débloquer #}
+                        <form method="post" action="{{ path('app_user_toggle_ban', {'id': user.id}) }}" style="display: inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('toggle-ban' ~ user.id) }}">
+                            {% if user.statut.value == 'banned' %}
+                                <button type="submit" class="btn-action btn-unban" onclick="return confirm('Are you sure you want to unblock this user?')">Unblock</button>
+                            {% else %}
+                                <button type="submit" class="btn-action btn-ban" onclick="return confirm('Are you sure you want to block this user?')">Block</button>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
             {% else %}
@@ -221,7 +233,7 @@
 /* Table Header */
 .table-header {
     display: grid;
-    grid-template-columns: 50px 80px 1fr 1fr 1.5fr 1fr 1fr 1fr 150px;
+    grid-template-columns: 50px 80px 1fr 1fr 1.5fr 1fr 1fr 1fr 220px;
     gap: 15px;
     padding: 15px 20px;
     background: #f1f5f9;
@@ -283,7 +295,7 @@
 
 .table-row {
     display: grid;
-    grid-template-columns: 50px 80px 1fr 1fr 1.5fr 1fr 1fr 1fr 150px;
+    grid-template-columns: 50px 80px 1fr 1fr 1.5fr 1fr 1fr 1fr 220px;
     gap: 15px;
     padding: 15px 20px;
     border-bottom: 1px solid #f1f5f9;
@@ -361,10 +373,17 @@
     border: 1px solid #fecaca;
 }
 
+.status-badge.banned {
+    background: #1f2937;
+    color: #ffffff;
+    border: 1px solid #374151;
+}
+
 /* Actions */
 .actions-cell {
     display: flex;
     gap: 8px;
+    flex-wrap: wrap;
 }
 
 .btn-action {
@@ -385,6 +404,16 @@
 
 .btn-edit {
     background: #f59e0b;
+    color: white;
+}
+
+.btn-ban {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-unban {
+    background: #8b5cf6;
     color: white;
 }
 

@@ -4,7 +4,7 @@
 {% block body %}
 <div class="form-container">
     <h1 class="form-title"> Create New User</h1>
-
+     
     {{ include('user/_form.html.twig') }}
 
     <a class="back-link" href="{{ path('app_user_index') }}">Back to list</a>
@@ -35,6 +35,7 @@
     color: #333;
     margin-bottom: 30px;
 }
+
 
 /* Champs du formulaire */
 .e-profile-form input,

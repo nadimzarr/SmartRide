@@ -1,4 +1,5 @@
-{% extends 'base.html.twig' %}
+{% extends 'frontcontroller/frontoffice.html.twig' %}
+
 
 {% block title %}Password Reset Email Sent{% endblock %}
 
@@ -8,4 +9,37 @@
         This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
     </p>
     <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
+<style>
+/* Lien "try again" en bouton moderne */
+body p a {
+    display: inline-block;
+    color: #ffffff;
+    background: linear-gradient(135deg, #4f46e5, #3b82f6);
+    padding: 10px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+body p a:hover {
+    background: linear-gradient(135deg, #4338ca, #2563eb);
+    box-shadow: 0 5px 15px rgba(59,130,246,0.3);
+    transform: translateY(-2px);
+}
+
+/* Responsive pour mobile */
+@media (max-width: 600px) {
+    body p {
+        padding: 25px 20px;
+        font-size: 15px;
+    }
+    body p a {
+        padding: 8px 18px;
+        font-size: 14px;
+    }
+}
+</style>
 {% endblock %}
+

@@ -166,7 +166,13 @@ class ResetPasswordController extends AbstractController
             ])
         ;
 
-        $mailer->send($email);
+        try {
+            $mailer->send($email);
+        } catch (\Exception $e) {
+            // Log the error but don't reveal it to the user
+            error_log('Failed to send reset password email to ' . $user->getEmail() . ': ' . $e->getMessage());
+            // Still redirect to check-email to not reveal if user exists
+        }
 
         // Store the token object in session for retrieval in check-email route.
         $this->setTokenObjectInSession($resetToken);

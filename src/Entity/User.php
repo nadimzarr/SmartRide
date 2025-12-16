@@ -20,52 +20,48 @@ class User implements   UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    
-
-#[ORM\Column(length: 100)]
-#[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
-#[Assert\Length(
-    min: 8,
-    minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères."
-)]
-#[Assert\Regex(
-    pattern: '/[!@#$%^&*(),.?":{}|<>]/',
-    message: "Le mot de passe doit contenir au moins un caractère spécial."
-)]
-private ?string $password = null;
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
+    #[Assert\Length(
+        min: 8,
+        minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères."
+    )]
+    #[Assert\Regex(
+        pattern: '/[!@#$%^&*(),.?":{}|<>]/',
+        message: "Le mot de passe doit contenir au moins un caractère spécial."
+    )]
+    private ?string $password = null;
 
     #[ORM\Column(length: 100)]
-#[Assert\NotBlank(message: "Le nom est obligatoire.")]
-#[Assert\Regex(
-    pattern: "/^[\p{L}]+$/u",
-    message: "Le nom doit contenir uniquement des lettres."
-)]
-private ?string $nom = null;
+    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    #[Assert\Regex(
+        pattern: "/^[\p{L}]+$/u",
+        message: "Le nom doit contenir uniquement des lettres."
+    )]
+    private ?string $nom = null;
 
-#[ORM\Column(length: 100)]
-#[Assert\NotBlank(message: "Le prénom est obligatoire.")]
-#[Assert\Regex(
-    pattern: "/^[\p{L}]+$/u",
-    message: "Le prénom doit contenir uniquement des lettres."
-)]
-private ?string $prenom = null;
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
+    #[Assert\Regex(
+        pattern: "/^[\p{L}]+$/u",
+        message: "Le prénom doit contenir uniquement des lettres."
+    )]
+    private ?string $prenom = null;
 
-#[ORM\Column]
-#[Assert\NotBlank(message: "Le numéro de téléphone est obligatoire.")]
-#[Assert\Regex(
-    pattern: '/^[0-9]{8}$/',
-    message: "Le numéro doit contenir exactement 8 chiffres."
-)]
-private ?string $tel = null;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Le numéro de téléphone est obligatoire.")]
+    #[Assert\Regex(
+        pattern: '/^[0-9]{8}$/',
+        message: "Le numéro doit contenir exactement 8 chiffres."
+    )]
+    private ?string $tel = null;
 
-
-
-  #[ORM\Column(length: 100)]
-  #[Assert\NotBlank(message: "L'email est obligatoire.")]
- #[Assert\Email(
-    message: "L'email '{{ value }}' n'est pas valide. Il doit contenir un '@'."
-)]
-private ?string $email = null;
+    #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\Email(
+        message: "L'email '{{ value }}' n'est pas valide. Il doit contenir un '@'."
+    )]
+    private ?string $email = null;
 
     #[ORM\Column(enumType: Type::class)]
     private ?Type $Type = Type::Client;

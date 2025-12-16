@@ -10,17 +10,28 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nom')
-            ->add('prenom')
-            ->add('password', PasswordType::class)
-            ->add('tel')
-            ->add('email')
+    ->add('nom', TextType::class, [
+        'label' => 'First Name', // affichage en anglais
+    ])
+    ->add('prenom', TextType::class, [
+        'label' => 'Last Name',
+    ])
+    ->add('password', PasswordType::class, [
+        'label' => 'Password',
+    ])
+    ->add('tel', TextType::class, [
+        'label' => 'Phone',
+    ])
+    ->add('email', EmailType::class, [
+        'label' => 'Email',
+    ]);
             /*->add('Type', ChoiceType::class, [
                 'choices' => [
                     'Admin' => Type::Admin,

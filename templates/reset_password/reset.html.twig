@@ -1,12 +1,147 @@
-{% extends 'base.html.twig' %}
+    {% extends 'frontcontroller/frontoffice.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
 
-{% block body %}
-    <h1>Reset your password</h1>
+    {% block title %}Reset your password{% endblock %}
 
-    {{ form_start(resetForm) }}
-        {{ form_row(resetForm.plainPassword) }}
-        <button class="btn btn-primary">Reset password</button>
-    {{ form_end(resetForm) }}
-{% endblock %}
+    {% block body %}
+        <h1>Reset your password</h1>
+
+        {{ form_start(resetForm, {'attr': {'class': 'reset-form'}}) }}
+            {{ form_row(resetForm.plainPassword) }}
+            <button class="btn btn-primary">Reset password</button>
+        {{ form_end(resetForm) }}
+<style>
+/* Wrapper centré et fond moderne */
+.reset-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card du formulaire */
+.reset-card {
+    background-color: #ffffff;
+    padding: 50px 40px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.reset-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+/* Titre */
+.reset-card h1 {
+    text-align: center;
+    font-size: 32px;
+    margin-bottom: 35px;
+    color: #333333;
+    font-weight: 700;
+}
+
+/* Champs du formulaire */
+.reset-form .form-group {
+    margin-bottom: 30px;
+}
+
+.reset-form label {
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.reset-form input[type="password"],
+.reset-form input[type="text"],
+.reset-form input[type="email"] {
+    width: 100%;
+    padding: 16px 18px;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 18px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.reset-form input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0,123,255,0.25);
+    outline: none;
+}
+
+/* Bouton principal */
+.reset-form .btn {
+    width: 100%;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #007bff, #00c6ff);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.4s, transform 0.2s;
+    margin-top: 15px;
+}
+
+.reset-form .btn:hover {
+    background: linear-gradient(90deg, #0056b3, #0088cc);
+    transform: translateY(-2px);
+}
+
+/* Messages d'erreur */
+.reset-form .form-error-message {
+    color: #dc3545;
+    font-size: 16px;
+    margin-top: 8px;
+}
+
+/* Message de succès */
+.success-message {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    padding: 14px 18px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 16px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Animation fadeIn */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .reset-card {
+        padding: 35px 25px;
+    }
+
+    .reset-card h1 {
+        font-size: 28px;
+    }
+
+    .reset-form input,
+    .reset-form .btn {
+        font-size: 16px;
+        padding: 14px 16px;
+    }
+
+    .reset-form label {
+        font-size: 16px;
+    }
+}
+</style>
+    {% endblock %}

@@ -3,34 +3,131 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form class="login-form" method="post" action="{{ path('app_login') }}">
+<form class="login-form" method="post" action="{{ path('app_login') }}" novalidate>
 
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
+
+    {# Messages flash pour les erreurs reCAPTCHA #}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
+
+    {# Messages flash de succès #}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
 
     {% if app.user %}
         <div class="mb-3">
             You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
     {% endif %}
-
+    
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    
     <label for="inputEmail">Email</label>
     <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    
     <label for="inputPassword">Password</label>
     <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-    <button class="btn btn-lg btn-primary" type="submit">Sign in</button>
+    
+    {# reCAPTCHA v2 - Case à cocher "Je ne suis pas un robot" #}
+    <div class="recaptcha-container">
+        <div class="g-recaptcha" data-sitekey="6LdJ5SksAAAAALFyLwNQBP3nt8xiHkwj1p5Jq9eO"></div>
+        <div id="recaptcha-error" class="recaptcha-error"></div>
+    </div>
+    
+    <button class="btn btn-lg btn-primary" type="submit" id="submitBtn">Sign in</button>
+    
     <a href="{{ path('app_user_new') }}" class="btn-create">Create Account</a>
     <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
 </form>
+
+{# Script reCAPTCHA v2 #}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script>
+(function() {
+    'use strict';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.login-form');
+        const recaptchaError = document.getElementById('recaptcha-error');
+
+        form.addEventListener('submit', function(e) {
+            // Récupère la réponse reCAPTCHA v2
+            const recaptchaResponse = grecaptcha.getResponse();
+            
+            // Vérification côté client : la case doit être cochée
+            if (recaptchaResponse.length === 0) {
+                e.preventDefault();
+                recaptchaError.textContent = '⚠️ Veuillez cocher la case "Je ne suis pas un robot"';
+                recaptchaError.style.display = 'block';
+                
+                // Scroll vers l'erreur
+                recaptchaError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                return false;
+            }
+            
+            // Efface le message d'erreur si validation OK
+            recaptchaError.style.display = 'none';
+            return true;
+        });
+
+        // Efface l'erreur quand l'utilisateur coche la case
+        window.recaptchaCallback = function() {
+            recaptchaError.style.display = 'none';
+        };
+    });
+})();
+</script>
+
 <style>
 /* --- Formulaire login professionnel --- */
+
+/* Container reCAPTCHA */
+.recaptcha-container {
+    margin: 25px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.g-recaptcha {
+    display: inline-block;
+    margin: 0 auto;
+}
+
+.recaptcha-error {
+    display: none;
+    color: #dc3545;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 12px;
+    padding: 10px 15px;
+    background: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-radius: 8px;
+    text-align: center;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
 /* --- Bouton Create Account --- */
 .btn-create {
-    display: inline-block;
+    display: block;
+    width: 100%;
     padding: 12px 25px;
     background: linear-gradient(135deg, #28a745, #20c154);
     color: #fff;
@@ -38,9 +135,11 @@
     font-weight: 600;
     border-radius: 12px;
     text-decoration: none;
+    text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 20px; /* éloigner du bouton login */
+    margin-top: 20px;
+    margin-bottom: 10px;
     box-shadow: 0 6px 15px rgba(40, 167, 69, 0.3);
 }
 
@@ -48,16 +147,33 @@
     background: linear-gradient(135deg, #20c154, #28a745);
     transform: translateY(-3px) scale(1.03);
     box-shadow: 0 10px 22px rgba(40, 167, 69, 0.45);
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Lien Mot de passe oublié */
+.login-form a[href*="forgot"] {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #2575fc;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.login-form a[href*="forgot"]:hover {
+    text-decoration: underline;
+    color: #1a5cd1;
 }
 
 /* --- Formulaire login amélioré --- */
 form.login-form {
     background: #ffffff;
-    padding: 55px 45px;        /* plus grand */
+    padding: 55px 45px;
     border-radius: 18px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    max-width: 500px;          /* plus large */
-    margin: 70px auto;         /* plus d'espace autour */
+    max-width: 500px;
+    margin: 70px auto;
     text-align: center;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     transition: all 0.3s ease;
@@ -70,33 +186,34 @@ form.login-form:hover {
 
 /* Titre */
 form.login-form h1 {
-    margin-bottom: 40px;   /* espace plus grand */
+    margin-bottom: 40px;
     color: #333;
     font-size: 28px;
     font-weight: 700;
 }
 
-/* Labels plus loin */
+/* Labels */
 form.login-form label {
     display: block;
     text-align: left;
-    margin-bottom: 10px;   /* distance augmentée */
-    margin-top: 15px;      /* espace AVANT label */
+    margin-bottom: 10px;
+    margin-top: 15px;
     font-weight: 600;
     color: #444;
     font-size: 15px;
 }
 
-/* Inputs plus grands et espacés */
+/* Inputs */
 form.login-form input[type="email"],
 form.login-form input[type="password"] {
     width: 100%;
-    padding: 15px 18px;        /* champs plus grands */
-    margin-bottom: 30px;       /* plus d’espace entre les inputs */
+    padding: 15px 18px;
+    margin-bottom: 30px;
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 15px;
     transition: all 0.3s ease;
+    box-sizing: border-box;
 }
 
 form.login-form input:focus {
@@ -117,18 +234,22 @@ form.login-form .btn {
     font-weight: 700;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 15px;   /* espace depuis le password */
+    margin-top: 15px;
+    position: relative;
 }
 
-form.login-form .btn:hover {
+form.login-form .btn:hover:not(:disabled) {
     background: #1a5cd1;
     box-shadow: 0 7px 20px rgba(37,117,252,0.35);
 }
 
-/* Alerte */
+form.login-form .btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Alertes */
 form.login-form .alert {
-    background: #f8d7da;
-    color: #842029;
     padding: 12px 15px;
     margin-bottom: 25px;
     border-radius: 10px;
@@ -136,13 +257,46 @@ form.login-form .alert {
     text-align: left;
 }
 
+form.login-form .alert-danger {
+    background: #f8d7da;
+    color: #842029;
+    border: 1px solid #f5c2c7;
+}
+
+form.login-form .alert-success {
+    background: #d1e7dd;
+    color: #0f5132;
+    border: 1px solid #badbcc;
+}
+
+/* Responsive */
 @media (max-width: 480px) {
     form.login-form {
         padding: 35px 25px;
         margin: 25px;
     }
+    
+    form.login-form h1 {
+        font-size: 24px;
+    }
+    
+    form.login-form .btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+    
+    .g-recaptcha {
+        transform: scale(0.9);
+        transform-origin: center center;
+    }
 }
 
-
+/* Très petit écran */
+@media (max-width: 380px) {
+    .g-recaptcha {
+        transform: scale(0.77);
+    }
+}
 </style>
+
 {% endblock %}

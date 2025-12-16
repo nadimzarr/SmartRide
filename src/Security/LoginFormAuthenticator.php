@@ -13,6 +13,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Security\Core\Security;
+use ReCaptcha\ReCaptcha;
 
 class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -29,7 +30,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
         $email = $request->request->get('email', '');
         $password = $request->request->get('password', '');
         $csrfToken = $request->request->get('_csrf_token');
-
+       
         // On mémorise le dernier username/email saisi
         $request->getSession()->set(Security::LAST_USERNAME, $email);
 
@@ -42,6 +43,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
             ]
         );
     }
+    
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?RedirectResponse
     {
