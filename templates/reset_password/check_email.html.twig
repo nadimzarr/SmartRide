@@ -4,42 +4,125 @@
 {% block title %}Password Reset Email Sent{% endblock %}
 
 {% block body %}
-    <p>
-        If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.
-        This link will expire in {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
-    </p>
-    <p>If you don't receive an email please check your spam folder or <a href="{{ path('app_forgot_password_request') }}">try again</a>.</p>
-<style>
-/* Lien "try again" en bouton moderne */
-body p a {
-    display: inline-block;
-    color: #ffffff;
-    background: linear-gradient(135deg, #4f46e5, #3b82f6);
-    padding: 10px 22px;
-    border-radius: 10px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    margin-top: 10px;
-}
-
-body p a:hover {
-    background: linear-gradient(135deg, #4338ca, #2563eb);
-    box-shadow: 0 5px 15px rgba(59,130,246,0.3);
-    transform: translateY(-2px);
-}
-
-/* Responsive pour mobile */
-@media (max-width: 600px) {
-    body p {
-        padding: 25px 20px;
-        font-size: 15px;
-    }
-    body p a {
-        padding: 8px 18px;
-        font-size: 14px;
-    }
-}
-</style>
+    <div class="reset-email-wrapper">
+        <div class="reset-email-card">
+            <div class="reset-email-header">
+                <div class="brand-mark">SmartRide</div>
+                <h1>Check Your Inbox</h1>
+                <p class="subtitle">We’ve sent you a secure link to reset your password.</p>
+            </div>
+            <div class="reset-email-content">
+                <p class="lead">
+                    If an account matching your email exists, an email has been sent with a link to reset your password.
+                    This link will expire in
+                    <strong>{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}</strong>.
+                </p>
+                <p class="secondary">
+                    If you don’t receive an email, please check your spam folder or request a new link.
+                </p>
+                <div class="actions">
+                    <a href="{{ path('app_forgot_password_request') }}" class="cta">Try Again</a>
+                </div>
+            </div>
+            <div class="reset-email-footer">
+                <div class="note">
+                    For your security, this link is time-limited and can only be used once.
+                </div>
+            </div>
+        </div>
+    </div>
+    <style>
+        .reset-email-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .reset-email-card {
+            max-width: 720px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #eef2f7;
+        }
+        .reset-email-header {
+            padding: 28px 28px 10px 28px;
+            text-align: center;
+            position: relative;
+        }
+        .brand-mark {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            background: #1abc9c;
+            color: #0b3b35;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.4px;
+            margin-bottom: 12px;
+        }
+        .reset-email-header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #2c3e50;
+            margin: 0 0 8px 0;
+        }
+        .reset-email-header .subtitle {
+            font-size: 16px;
+            color: #64748b;
+            margin: 0;
+        }
+        .reset-email-content {
+            padding: 22px 28px 8px 28px;
+        }
+        .lead {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #334155;
+            margin-bottom: 14px;
+        }
+        .secondary {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .cta {
+            display: inline-block;
+            padding: 12px 22px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            border: 0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(26, 188, 156, 0.25);
+        }
+        .reset-email-footer {
+            padding: 18px 28px 26px 28px;
+        }
+        .note {
+            background: #f0fdf4;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-size: 14px;
+        }
+        @media (max-width: 640px) {
+            .reset-email-header h1 { font-size: 24px; }
+            .lead { font-size: 15px; }
+            .cta { padding: 10px 18px; font-size: 15px; }
+        }
+    </style>
 {% endblock %}
-

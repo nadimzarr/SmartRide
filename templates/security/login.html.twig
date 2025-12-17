@@ -1,20 +1,15 @@
-{% extends 'frontcontroller/frontoffice.html.twig' %}
-
-{% block title %}Log in!{% endblock %}
-
 {% block body %}
 <form class="login-form" method="post" action="{{ path('app_login') }}" novalidate>
-
     {% if error %}
         <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
-    {# Messages flash pour les erreurs reCAPTCHA #}
+    {# Flash messages for reCAPTCHA errors #}
     {% for message in app.flashes('error') %}
         <div class="alert alert-danger">{{ message }}</div>
     {% endfor %}
 
-    {# Messages flash de succès #}
+    {# Success flash messages #}
     {% for message in app.flashes('success') %}
         <div class="alert alert-success">{{ message }}</div>
     {% endfor %}
@@ -44,12 +39,13 @@
     <button class="btn btn-lg btn-primary" type="submit" id="submitBtn">Sign in</button>
     
     <a href="{{ path('app_user_new') }}" class="btn-create">Create Account</a>
-    <a href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
+    <a href="{{ path('app_forgot_password_request') }}">Forgot your password?</a>
 </form>
-
+{% endblock %}
 {# Script reCAPTCHA v2 #}
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+{% block javascripts %}
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
 (function() {
     'use strict';
@@ -65,7 +61,7 @@
             // Vérification côté client : la case doit être cochée
             if (recaptchaResponse.length === 0) {
                 e.preventDefault();
-                recaptchaError.textContent = '⚠️ Veuillez cocher la case "Je ne suis pas un robot"';
+                recaptchaError.textContent = '⚠️ Please check the "I am not a robot" box';
                 recaptchaError.style.display = 'block';
                 
                 // Scroll vers l'erreur
@@ -86,6 +82,8 @@
     });
 })();
 </script>
+{% endblock %}
+{% block stylesheets %}
 
 <style>
 /* --- Formulaire login professionnel --- */
@@ -127,7 +125,6 @@
 /* --- Bouton Create Account --- */
 .btn-create {
     display: block;
-    width: 100%;
     padding: 12px 25px;
     background: linear-gradient(135deg, #28a745, #20c154);
     color: #fff;
@@ -298,5 +295,4 @@ form.login-form .alert-success {
     }
 }
 </style>
-
 {% endblock %}

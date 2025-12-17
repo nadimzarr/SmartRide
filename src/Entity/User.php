@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Enum\Statut;
 use App\Enum\Type;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,45 +23,45 @@ class User implements   UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "Le mot de passe est obligatoire.")]
+    #[Assert\NotBlank(message: "Password is required.")]
     #[Assert\Length(
         min: 8,
-        minMessage: "Le mot de passe doit contenir au moins {{ limit }} caractères."
+        minMessage: "Password must be at least {{ limit }} characters long."
     )]
     #[Assert\Regex(
         pattern: '/[!@#$%^&*(),.?":{}|<>]/',
-        message: "Le mot de passe doit contenir au moins un caractère spécial."
+        message: "Password must contain at least one special character."
     )]
     private ?string $password = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "Le nom est obligatoire.")]
+    #[Assert\NotBlank(message: "Last name is required.")]
     #[Assert\Regex(
         pattern: "/^[\p{L}]+$/u",
-        message: "Le nom doit contenir uniquement des lettres."
+        message: "Last name must contain only letters."
     )]
     private ?string $nom = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
+    #[Assert\NotBlank(message: "First name is required.")]
     #[Assert\Regex(
         pattern: "/^[\p{L}]+$/u",
-        message: "Le prénom doit contenir uniquement des lettres."
+        message: "First name must contain only letters."
     )]
     private ?string $prenom = null;
 
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Le numéro de téléphone est obligatoire.")]
+    #[Assert\NotBlank(message: "Phone number is required.")]
     #[Assert\Regex(
         pattern: '/^[0-9]{8}$/',
-        message: "Le numéro doit contenir exactement 8 chiffres."
+        message: "Phone number must contain exactly 8 digits."
     )]
     private ?string $tel = null;
 
     #[ORM\Column(length: 100)]
-    #[Assert\NotBlank(message: "L'email est obligatoire.")]
+    #[Assert\NotBlank(message: "Email is required.")]
     #[Assert\Email(
-        message: "L'email '{{ value }}' n'est pas valide. Il doit contenir un '@'."
+        message: "Email '{{ value }}' is not valid. It must contain '@'."
     )]
     private ?string $email = null;
 
@@ -68,6 +70,14 @@ class User implements   UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(enumType: Statut::class)]
     private ?Statut $Statut = Statut::ACTIVE;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Reclamation::class)]
+    private Collection $reclamations;
+
+    public function __construct()
+    {
+        $this->reclamations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -170,9 +180,37 @@ public function getRoles(): array
 }
 
 public function eraseCredentials(): void
-{
-    // rien à effacer
-}
+    {
+        // rien à effacer
+    }
 
+    /**
+     * @return Collection<int, Reclamation>
+     */
+    public function getReclamations(): Collection
+    {
+        return $this->reclamations;
+    }
 
+    public function addReclamation(Reclamation $reclamation): static
+    {
+        if (!$this->reclamations->contains($reclamation)) {
+            $this->reclamations->add($reclamation);
+            $reclamation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReclamation(Reclamation $reclamation): static
+    {
+        if ($this->reclamations->removeElement($reclamation)) {
+            // set the owning side to null (unless already changed)
+            if ($reclamation->getUser() === $this) {
+                $reclamation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

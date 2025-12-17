@@ -1,0 +1,4 @@
+# Déclaration du service BadWordsFilter
+Vendor\BadWordsBundle\Service\BadWordsFilter:
+    public: true
+    autowire: true

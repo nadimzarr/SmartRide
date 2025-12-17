@@ -1,0 +1,228 @@
+{% extends 'frontcontroller/frontoffice.html.twig' %}
+
+{% block title %}Reclamation index{% endblock %}
+
+{% block body %}
+{% for message in app.flashes('success') %}
+    <script>
+        alert("{{ message|e('js') }}");
+    </script>
+{% endfor %}
+
+<div style="text-align: center; margin-top: 50px;">
+    <h1 style="
+        font-size: 32px;           /* taille réduite */
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: 12px 20px;
+        border-radius: 15px;
+        background-color: #2c3e50;
+        color: #1abc9c;
+        display: inline-block;
+        animation: pulse 2s ease-in-out 1 forwards, colorShift 4s ease-in-out 1 forwards;
+    ">
+        Reclamation List
+    </h1>
+</div>
+
+
+
+<style>
+@keyframes pulse {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.05);}
+    100% {transform: scale(1);}
+}
+
+@keyframes colorShift {
+    0% {color: #1abc9c;}
+    50% {color: #16a085;}
+    100% {color: #1abc9c;}
+}
+</style>
+<div style="display: flex; align-items: center; gap: 10px; max-width: 800px; margin: 30px auto;">
+    <input type="text" id="search" placeholder="Search Reclamation..." class="form-control" style="flex:1;">
+    
+    <a href="{{ path('app_reclamation_new') }}"
+       style="
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #2c3e50, #1c364fff);
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-align: center;
+       "
+       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+    >
+         Add a Reclamation
+    </a>
+</div>
+
+<div id="results">
+    <table class="table">
+        <thead>
+            <tr>
+              
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Reclamation Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reclamation in reclamations %}
+            <tr>
+                
+                <td>{{ reclamation.nom }}</td>
+                <td>{{ reclamation.prenom }}</td>
+                <td>{{ reclamation.typeReclamation.value }}</td>
+               
+                <td>
+                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}"
+       style="
+            background: #16a085;
+            padding: 12px 20px;
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-right: 10px;
+            transition: 0.3s ease;
+       "
+        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+>
+        Détails
+    </a>
+
+    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}"
+       style="
+            background: #16a085;
+            padding: 12px 20px;
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s ease;
+       "
+         onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+>
+        Modifier
+    </a>
+     <a href="{{ path('app_reclamation_reponse', {'id': reclamation.id}) }}"
+      style="
+        background: #16a085;
+            padding: 12px 20px;
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: 0.3s ease;
+       "
+         onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+    onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+>
+        Voir Réponse
+    </a>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">aucune reclamation trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+document.getElementById('search').addEventListener('keyup', function() {
+    let query = this.value;
+
+    fetch('{{ path("app_reclamation_index") }}?q=' + encodeURIComponent(query), {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        let html = '<table class="table"><thead><tr><th>Nom</th><th>Prenom</th><th>Type de Reclamation</th><th>Actions</th></tr></thead><tbody>';
+
+        if(data.length === 0){
+            html += '<tr><td colspan="4">Aucun résultat trouvé</td></tr>';
+        } else {
+            data.forEach(item => {
+                html += `<tr>
+                            <td>${item.user_nom ? item.user_nom : item.nom}</td>
+                            <td>${item.user_prenom ? item.user_prenom : item.prenom}</td>
+                            <td>${item.type_reclamation}</td>
+                            <td>
+                                <a href="/reclamation/${item.id}" 
+                        style="
+                        background: #16a085;
+                        padding: 12px 20px;
+                        display: inline-block;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 10px;
+                        font-weight: 600;
+                     margin-right: 10px;
+                     transition: 0.3s ease;
+       "
+        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+                >Details</a>
+                                <a href="/reclamation/${item.id}/edit"
+                                  style="
+                        background: #16a085;
+                        padding: 12px 20px;
+                        display: inline-block;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 10px;
+                        font-weight: 600;
+                     margin-right: 10px;
+                     transition: 0.3s ease;
+       "
+                 onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+        >Edit</a>
+                                <a href="/reclamation/${item.id}/reponse"
+                                 style="
+                        background: #16a085;
+                        padding: 12px 20px;
+                        display: inline-block;
+                        color: white;
+                        text-decoration: none;
+                        border-radius: 10px;
+                        font-weight: 600;
+                     margin-right: 10px;
+                     transition: 0.3s ease;
+       "
+        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
+        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
+                                
+                                >View Response</a>
+                            </td>
+                         </tr>`;
+            });
+        }
+
+        html += '</tbody></table>';
+        document.getElementById('results').innerHTML = html;
+    })
+    .catch(err => console.error('Fetch error:', err));
+});
+</script>
+
+
+
+{% endblock %}

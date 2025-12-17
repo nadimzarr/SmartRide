@@ -309,11 +309,76 @@ svg {
   vertical-align: middle;
 }
 
+<<<<<<< HEAD
+/* Style général de la table */
+table {
+    width: 100%;
+    border-collapse: collapse; /* Supprime les doubles bordures */
+    margin: 20px 0;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    text-align: left;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* ombre douce */
+    border-radius: 12px; /* coins arrondis */
+    overflow: hidden; /* coins arrondis effectifs */
+}
+
+/* En-tête */
+table thead {
+    background-color: #1abc9c;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+table thead th {
+    padding: 12px 15px;
+}
+
+/* Corps du tableau */
+table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.3s;
+}
+
+/* Lignes alternées */
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Hover sur une ligne */
+table tbody tr:hover {
+    background-color: #d1f0eb;
+}
+
+/* Cellules */
+table td {
+    padding: 12px 15px;
+}
+
+/* Boutons ou liens dans le tableau */
+table td a, table td button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #1abc9c;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+table td a:hover, table td button:hover {
+    background-color: #16a085;
+}
+
+
+=======
 table {
   caption-side: bottom;
   border-collapse: collapse;
 }
 
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 caption {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -490,7 +555,10 @@ progress {
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
+<<<<<<< HEAD
+=======
            /* occupe toute la page pour centrer correctement */
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 }
 
 .display-1 {
@@ -1280,6 +1348,13 @@ progress {
     flex: 0 0 auto;
     width: 25%;
   }
+<<<<<<< HEAD
+  .col-lg-4 {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+=======
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
   .col-lg-5 {
     flex: 0 0 auto;
     width: 41.66666667%;
@@ -11014,6 +11089,18 @@ html {
 .portfolio .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
   font-size: 1.5rem;
 }
+<<<<<<< HEAD
+.portfolio-item img {
+    max-width: 70%;   /* Taille réduite */
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px; /* optionnel : coins arrondis */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* optionnel : ombre */
+}
+
+=======
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 
 .portfolio-modal .btn-close {
   color: #1abc9c;
@@ -11041,6 +11128,155 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+<<<<<<< HEAD
+
+/* Centrer le titre */
+.reclamation-form + h1,
+h1 {
+    text-align: center;
+    margin-bottom: 30px; /* espace entre le titre et le formulaire */
+    color: #333;
+    font-size: 28px;
+}
+
+.reclamation-form {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.reclamation-form input,
+.reclamation-form select,
+.reclamation-form textarea {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Conteneur des boutons */
+.reclamation-form .button-group {
+    display: flex;
+    justify-content: center; /* centre horizontalement */
+    gap: 15px; /* espace entre les boutons */
+    margin-top: 20px;
+}
+
+/* Style des boutons et liens */
+
+.reclamation-form .button-group button,
+.reclamation-form .button-group a {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.reclamation-form .button-group button:hover,
+.reclamation-form .button-group a:hover {
+    background-color: #1abc9c;
+}.reclamation-form .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.reclamation-form .button-group button,
+.reclamation-form .button-group a {
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.reclamation-form .button-group button:hover,
+.reclamation-form .button-group a:hover {
+    background-color: #16a085;
+}
+/* Tableau stylé */
+.table {
+    width: 80%;
+    margin: 30px auto;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table th, .table td {
+    padding: 12px 20px;
+    text-align: left;
+}
+
+.table th {
+    background: #16a085;
+    color: #fff;
+    font-weight: 600;
+}
+
+.table td {
+    background: #f9f9f9;
+    color: #333;
+}
+
+.table tr:nth-child(even) td {
+    background: #eafaf1;
+}
+
+.table tr:hover td {
+    background: #d1f0e3;
+    transition: background 0.3s;
+}
+
+/* Boutons stylés */
+.button-group {
+    text-align: center;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-custom {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+}
+
+.btn-delete {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.btn-custom:hover,
+.btn-delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+=======
 .e-profile-form {
   max-width: 600px;
   margin: 40px auto;
@@ -11121,6 +11357,7 @@ html {
   background-color: #218838; /* vert foncé */
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   transform: translateY(-2px);
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 }
 
 
