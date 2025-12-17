@@ -1,6 +1,6 @@
 {% extends 'frontcontroller/frontoffice.html.twig' %}
 
-{% block title %}Réponse à la Réclamation{% endblock %}
+{% block title %}Reclamation Response{% endblock %}
 
 {% block body %}
 <div style="max-width:800px; margin:50px auto; padding:30px; background:#ecf0f1; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.1); font-family: Arial, sans-serif;">
@@ -15,7 +15,7 @@
         text-transform: uppercase;
         animation: pulse 2s ease-in-out 1 forwards;
     ">
-        Réponse à la Réclamation
+        Reclamation Response
     </h1>
 
     <style>
@@ -51,22 +51,22 @@
     }
     </style>
 
-    <p><span class="info-label">Nom :</span> <span class="info-value">{{ reclamation.nom }} {{ reclamation.prenom }}</span></p>
-    <p><span class="info-label">Type :</span> <span class="info-value">{{ reclamation.typeReclamation.value }}</span></p>
-    <p><span class="info-label">Message :</span> <span class="info-value">{{ reclamation.message }}</span></p>
-    <p><span class="info-label">Date de réclamation :</span> <span class="info-value">{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('d/m/Y') : '' }}</span></p>
+    <p><span class="info-label">Name:</span> <span class="info-value">{{ reclamation.nom }} {{ reclamation.prenom }}</span></p>
+    <p><span class="info-label">Type:</span> <span class="info-value">{{ reclamation.typeReclamation.value }}</span></p>
+    <p><span class="info-label">Message:</span> <span class="info-value">{{ reclamation.message }}</span></p>
+    <p><span class="info-label">Reclamation Date:</span> <span class="info-value">{{ reclamation.dateReclamation ? reclamation.dateReclamation|date('d/m/Y') : '' }}</span></p>
 
     {% if reponse %}
         <div class="reponse-box">
-            <p><strong>Réponse :</strong> {{ reponse.contenu }}</p>
-            <p><strong>Date de réponse :</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : '' }}</p>
+            <p><strong>Response:</strong> {{ reponse.contenu }}</p>
+            <p><strong>Response Date:</strong> {{ reponse.dateReponse ? reponse.dateReponse|date('d/m/Y') : '' }}</p>
         </div>
     {% else %}
-        <p style="color:#e74c3c; font-weight:600; text-align:center; margin-top:20px;">Aucune réponse pour cette réclamation pour l'instant.</p>
+        <p style="color:#e74c3c; font-weight:600; text-align:center; margin-top:20px;">No response for this reclamation yet.</p>
     {% endif %}
 
     <div style="text-align:center; margin-top:40px;">
-        <a href="{{ path('app_reclamation_index') }}" class="btn-back">Retour aux réclamations</a>
+        <a href="{{ path('app_reclamation_index') }}" class="btn-back">Back to Reclamations</a>
     </div>
 
 </div>

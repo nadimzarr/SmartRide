@@ -17,7 +17,7 @@
         display: inline-block;
         animation: pulse 2s ease-in-out 1 forwards, colorShift 4s ease-in-out 1 forwards;
     ">
-        Créer une nouvelle réclamation
+        Create a new reclamation
     </h1>
 </div>
 
@@ -95,7 +95,13 @@
 
 <div id="reclamation-form-container" class="reclamation-form" style="max-width:600px; margin:0 auto; padding:20px;">
     {{ form_start(form, {'attr': {'id': 'reclamation-form'}}) }}
-        
+    
+    {% if form.vars.errors|length > 0 %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
     {% for field in form %}
         {% if field.vars.name != '_token' %}
             <div class="form-group">
@@ -136,7 +142,7 @@
             onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
         >
-            Ajouter
+            Add
         </button>
 
         <a href="{{ path('app_reclamation_index') }}"
@@ -156,7 +162,7 @@
             onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
         >
-            Retour à la liste
+            Back to list
         </a>
     </div>
 

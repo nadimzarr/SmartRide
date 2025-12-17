@@ -6,6 +6,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>SMARTRIDE</title>
+    <title>SmartRide</title>
 
   <!-- Favicon -->
   {# The favicon is located at public/assets/assets/favicon.ico in this project. #}
@@ -35,9 +36,29 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link" href="#portfolio">Reclamation</a></li>
-            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link" href="#about">Qui sommes-nous</a></li>
+            {% if app.user %}
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link" href="{{ path('app_reclamation_index') }}">Reclamation</a></li>
+            {% endif %}
+            
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link" href="#about">About Us</a></li>
             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link" href="#contact">Contact</a></li>
+            
+            {% if app.user %}
+                <li class="nav-item mx-0 mx-lg-1"><a class="nav-link" href="#portfolio">Profile</a></li>
+                <li class="nav-item mx-0 mx-lg-1">
+                    <a href="{{ path('app_logout') }}" class="nav-link logout-link">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item mx-0 mx-lg-1">
+                    <a href="{{ path('app_login') }}" class="nav-link">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+            {% endif %}
           </ul>
         </div>
       </div>
@@ -54,7 +75,7 @@
           <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
           <div class="divider-custom-line"></div>
         </div>
-        <p class="masthead-subheading font-weight-light mb-0">Partagez la route, économisez la vie.</p>
+        <p class="masthead-subheading font-weight-light mb-0">Share the road, save lives.</p>
       </div>
     </header>
 
@@ -62,6 +83,7 @@
     <section class="page-section portfolio" id="portfolio">
       <div class="container">
         <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Reclamation</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Profile</h2>
         <div class="divider-custom">
           <div class="divider-custom-line"></div>
           <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
@@ -88,18 +110,34 @@
           </div>
            </div>
 
-    {% block body %}{% endblock %}
+  <div class="container mt-3">
+      {% for label, messages in app.flashes %}
+          {% for message in messages %}
+              <div class="alert alert-{{ label == 'error' ? 'danger' : label }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+          {% endfor %}
+      {% endfor %}
+  </div>
+
+  {% block body %}{% endblock %} 
     
   </div>
         </div>
       </div>
      
+          <div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- About Section -->
     <section class="page-section bg-primary text-white mb-0" id="about">
       <div class="container">
         <h2 class="page-section-heading text-center text-uppercase text-white">Qui sommes-nous</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-white">About</h2>
         <div class="divider-custom divider-light">
           <div class="divider-custom-line"></div>
           <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
@@ -113,13 +151,16 @@
     </p>
   </div>
 </div>
+            <p class="lead">Notre application permet de partager vos trajets avec d’autres passagers, réduire vos frais de transport et contribuer à un environnement plus propre.</p>
+        </div>
       </div>
     </section>
 
     <!-- Contact Section -->
     <section class="page-section" id="contact">
       <div class="container">
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contactez-nous</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contact Us</h2>
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Contact Me</h2>
       </div>
     </section>
 

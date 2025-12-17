@@ -22,7 +22,7 @@
         display: inline-block;
         animation: pulse 2s ease-in-out 1 forwards, colorShift 4s ease-in-out 1 forwards;
     ">
-        Liste des Reclamations
+        Reclamation List
     </h1>
 </div>
 
@@ -42,7 +42,7 @@
 }
 </style>
 <div style="display: flex; align-items: center; gap: 10px; max-width: 800px; margin: 30px auto;">
-    <input type="text" id="search" placeholder="Rechercher Reclamation..." class="form-control" style="flex:1;">
+    <input type="text" id="search" placeholder="Search Reclamation..." class="form-control" style="flex:1;">
     
     <a href="{{ path('app_reclamation_new') }}"
        style="
@@ -60,7 +60,7 @@
        onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
        onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
     >
-         Ajouter une Reclamation
+         Add a Reclamation
     </a>
 </div>
 
@@ -69,11 +69,10 @@
         <thead>
             <tr>
               
-                <th>Nom</th>
-                <th>Prenom</th>
-                <th>Type_reclamation</th>
-               
-                <th>actions</th>
+                <th>Last Name</th>
+                <th>First Name</th>
+                <th>Reclamation Type</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -162,8 +161,8 @@ document.getElementById('search').addEventListener('keyup', function() {
         } else {
             data.forEach(item => {
                 html += `<tr>
-                            <td>${item.nom}</td>
-                            <td>${item.prenom}</td>
+                            <td>${item.user_nom ? item.user_nom : item.nom}</td>
+                            <td>${item.user_prenom ? item.user_prenom : item.prenom}</td>
                             <td>${item.type_reclamation}</td>
                             <td>
                                 <a href="/reclamation/${item.id}" 
@@ -180,7 +179,7 @@ document.getElementById('search').addEventListener('keyup', function() {
        "
         onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
-                >Détails</a>
+                >Details</a>
                                 <a href="/reclamation/${item.id}/edit"
                                   style="
                         background: #16a085;
@@ -195,7 +194,7 @@ document.getElementById('search').addEventListener('keyup', function() {
        "
                  onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
                 onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
-        >Modifier</a>
+        >Edit</a>
                                 <a href="/reclamation/${item.id}/reponse"
                                  style="
                         background: #16a085;
@@ -211,7 +210,7 @@ document.getElementById('search').addEventListener('keyup', function() {
         onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
         onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';"
                                 
-                                >Voir Réponse</a>
+                                >View Response</a>
                             </td>
                          </tr>`;
             });
@@ -220,7 +219,7 @@ document.getElementById('search').addEventListener('keyup', function() {
         html += '</tbody></table>';
         document.getElementById('results').innerHTML = html;
     })
-    .catch(err => console.error('Erreur fetch:', err));
+    .catch(err => console.error('Fetch error:', err));
 });
 </script>
 

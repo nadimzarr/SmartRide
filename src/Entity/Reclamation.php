@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Entity;
+
+use App\Entity\User;
 use App\Validator\BadWords;
 use App\Enum\TypeReclamation;
 use App\Repository\ReclamationRepository;
@@ -8,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: ReclamationRepository::class)]
 #[Assert\Callback('validateDateReclamation')]
 class Reclamation
@@ -18,41 +21,35 @@ class Reclamation
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-   #[Assert\NotBlank(message: "Le nom est obligatoire.")]
-#[Assert\Length(
-    min: 3,
-    minMessage: "Le nom doit comporter au moins 3 caractères."
-)]
-private ?string $nom = null;
+    #[Assert\NotBlank(message: "Name is required.")]
+    private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-     #[Assert\NotBlank(message: "Le prénom est obligatoire.")]
-    #[Assert\Regex(
-        pattern: '/^[A-ZÀ-Ÿ\s]+$/u',
-        message: 'Le prénom doit être en majuscules.'
-    )]
+    #[Assert\NotBlank(message: "First name is required.")]
     private ?string $prenom = null;
 
     #[ORM\Column(enumType: TypeReclamation::class)]
-    #[Assert\NotBlank(message: "Le Type de Reclamation est obligatoire.")]
+    #[Assert\NotBlank(message: "Reclamation type is required.")]
     private ?TypeReclamation $type_reclamation = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "La description est obligatoire.")]
-    #[BadWords(message: "Votre description contient des mots interdits.")]
+    #[Assert\NotBlank(message: "Description is required.")]
+    #[BadWords(message: "Your description contains prohibited words.")]
     #[Assert\Length(
         min: 10,
-        minMessage: "La description doit contenir au moins {{ limit }} caractères."
+        minMessage: "Description must be at least {{ limit }} characters long."
     )]
     private ?string $message = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-     #[Assert\NotBlank(message: "La date est obligatoire.")]
-    
+    #[Assert\NotBlank(message: "Date is required.")]
     private ?\DateTime $date_reclamation = null;
 
     #[ORM\OneToOne(mappedBy: 'reclamation', cascade: ['persist', 'remove'])]
     private ?Reponse $reponse = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reclamations')]
+    private ?User $user = null;
 
     public function getId(): ?int
     {
@@ -107,7 +104,7 @@ private ?string $nom = null;
         return $this;
     }
 
-     public function getDateReclamation(): ?\DateTime
+    public function getDateReclamation(): ?\DateTime
     {
         return $this->date_reclamation;
     }
@@ -123,10 +120,15 @@ private ?string $nom = null;
         return $this->reponse;
     }
 
-    public function setReponse(Reponse $reponse): static
+    public function setReponse(?Reponse $reponse): static
     {
+        // unset the owning side of the relation if necessary
+        if ($reponse === null && $this->reponse !== null) {
+            $this->reponse->setReclamation(null);
+        }
+
         // set the owning side of the relation if necessary
-        if ($reponse->getReclamation() !== $this) {
+        if ($reponse !== null && $reponse->getReclamation() !== $this) {
             $reponse->setReclamation($this);
         }
 
@@ -134,7 +136,20 @@ private ?string $nom = null;
 
         return $this;
     }
-     public function validateDateReclamation(ExecutionContextInterface $context, $payload)
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function validateDateReclamation(ExecutionContextInterface $context, $payload)
     {
         if ($this->date_reclamation) {
             $today = new \DateTime('today');

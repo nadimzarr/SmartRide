@@ -21,15 +21,15 @@ class Reponse
     private ?Reclamation $reclamation = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message: "Le contenu est obligatoire.")]
+    #[Assert\NotBlank(message: "Content is required.")]
     #[Assert\Length(
         min: 10,
-        minMessage: "Le contenu doit contenir au moins {{ limit }} caractères."
+        minMessage: "Content must be at least {{ limit }} characters long."
     )]
     private ?string $contenu = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    #[Assert\NotBlank(message: "La date est obligatoire.")]
+    #[Assert\NotBlank(message: "Date is required.")]
     private ?\DateTime $date_reponse = null;
 
     public function getId(): ?int
@@ -74,7 +74,7 @@ public function setDateReponse(\DateTime $date_reponse): static
     public function validateDate(ExecutionContextInterface $context, $payload)
 {
     if ($this->date_reponse && $this->date_reponse->format('Y-m-d') !== (new \DateTime())->format('Y-m-d')) {
-        $context->buildViolation('La date doit être la date du jour.')
+        $context->buildViolation('Date must be today.')
             ->atPath('date_reponse')
             ->addViolation();
     }

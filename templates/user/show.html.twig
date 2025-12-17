@@ -1,0 +1,119 @@
+{% extends 'admincontroller/admindashboard.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+<div class="user-detail-container">
+    <h1>User Details</h1>
+
+    <div class="user-card-single">
+        <div class="user-card-info">
+            <p><strong>Id:</strong> {{ user.id }}</p>
+            <p><strong>Password:</strong> {{ user.password }}</p>
+            <p><strong>FirstName:</strong> {{ user.nom }}</p>
+            <p><strong>LastName:</strong> {{ user.prenom }}</p>
+            <p><strong>Phone:</strong> {{ user.tel }}</p>
+            <p><strong>Email:</strong> {{ user.email }}</p>
+            <p><strong>Type:</strong> {{ user.Type.value }}</p>
+            <p><strong>Statut:</strong> {{ user.Statut.value }}</p>
+        </div>
+
+        <div class="user-card-actions">
+            <a href="{{ path('app_user_index') }}" class="btn-card btn-back">Back to list</a>
+            <a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-card btn-edit">Edit</a>
+            {{ include('user/_delete_form.html.twig') }}
+        </div>
+    </div>
+</div>
+
+<style>
+/* Conteneur principal centré */
+.user-detail-container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.user-detail-container h1 {
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Carte utilisateur */
+.user-card-single {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.user-card-single:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Infos utilisateur */
+.user-card-info p {
+    margin: 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+.user-card-info strong {
+    color: #333;
+}
+
+/* Actions boutons */
+.user-card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Boutons */
+.btn-card {
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.btn-back {
+    background-color: #4a90e2;
+}
+.btn-back:hover {
+    background-color: #357ABD;
+}
+
+.btn-edit {
+    background-color: #ffc107;
+    color: #333;
+}
+.btn-edit:hover {
+    background-color: #e0a800;
+    color: white;
+}
+
+/* Bouton supprimer (_delete_form.html.twig) */
+.user-card-actions form button {
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.user-card-actions form button:hover {
+    background-color: #c82333;
+}
+</style>
+{% endblock %}

@@ -488,14 +488,9 @@ progress {
 }
 
 .lead {
-  text-align: center;
-  font-size: 18px;   /* taille du texte */
-  color: #333;       /* couleur du texte */
-  line-height: 1.6;  /* espace entre les lignes */
+  font-size: 1.25rem;
+  font-weight: 300;
 }
-
-/* Centrer la colonne dans la ligne si tu ne veux pas utiliser Bootstrap mx-auto */
-
 
 .display-1 {
   font-size: calc(1.625rem + 4.5vw);
@@ -673,7 +668,6 @@ progress {
   }
 }
 .row {
-
   --bs-gutter-x: 1.5rem;
   --bs-gutter-y: 0;
   display: flex;
@@ -683,7 +677,6 @@ progress {
   margin-left: calc(-0.5 * var(--bs-gutter-x));
 }
 .row > * {
-  
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
@@ -1287,7 +1280,6 @@ progress {
     width: 25%;
   }
   .col-lg-4 {
-    
     flex: 0 0 auto;
     width: 33.33333333%;
   }
@@ -1307,10 +1299,6 @@ progress {
     flex: 0 0 auto;
     width: 66.66666667%;
   }
-  .row .col-lg-8 {
-  margin-left: auto;
-  margin-right: auto;
-}
   .col-lg-9 {
     flex: 0 0 auto;
     width: 75%;
@@ -10991,7 +10979,6 @@ html {
   font-size: 1.25rem;
 }
 .masthead .masthead-avatar {
-  
   width: 15rem;
 }
 
@@ -11057,3 +11044,4 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+

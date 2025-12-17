@@ -16,7 +16,7 @@
         display: inline-block;
         animation: pulse 2s ease-in-out 1 forwards, colorShift 4s ease-in-out 1 forwards;
     ">
-        Modifier réclamation
+        Edit Reclamation
     </h1>
 </div>
 
@@ -154,7 +154,7 @@
                "
                onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 15px rgba(0,0,0,0.25)';"
                onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.15)';">
-                Retour à la liste
+                Back to list
             </a>
 
         </div>
@@ -164,7 +164,7 @@
     {# Bouton supprimer séparé #}
     <div style="display:flex; justify-content:center; margin-top:20px;">
         <form method="post" action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}"
-              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réclamation ?');"
+              onsubmit="return confirm('Are you sure you want to delete this reclamation?');"
               style="margin:0;">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
             <button type="submit"

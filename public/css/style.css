@@ -309,6 +309,7 @@ svg {
   vertical-align: middle;
 }
 
+<<<<<<< HEAD
 /* Style général de la table */
 table {
     width: 100%;
@@ -371,6 +372,13 @@ table td a:hover, table td button:hover {
 }
 
 
+=======
+table {
+  caption-side: bottom;
+  border-collapse: collapse;
+}
+
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 caption {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -547,6 +555,10 @@ progress {
 .lead {
   font-size: 1.25rem;
   font-weight: 300;
+<<<<<<< HEAD
+=======
+           /* occupe toute la page pour centrer correctement */
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 }
 
 .display-1 {
@@ -1336,10 +1348,13 @@ progress {
     flex: 0 0 auto;
     width: 25%;
   }
+<<<<<<< HEAD
   .col-lg-4 {
     flex: 0 0 auto;
     width: 33.33333333%;
   }
+=======
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
   .col-lg-5 {
     flex: 0 0 auto;
     width: 41.66666667%;
@@ -11074,6 +11089,7 @@ html {
 .portfolio .portfolio-item .portfolio-item-caption .portfolio-item-caption-content {
   font-size: 1.5rem;
 }
+<<<<<<< HEAD
 .portfolio-item img {
     max-width: 70%;   /* Taille réduite */
     height: auto;
@@ -11083,6 +11099,8 @@ html {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* optionnel : ombre */
 }
 
+=======
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 
 .portfolio-modal .btn-close {
   color: #1abc9c;
@@ -11110,6 +11128,7 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+<<<<<<< HEAD
 
 /* Centrer le titre */
 .reclamation-form + h1,
@@ -11257,6 +11276,88 @@ h1 {
 .btn-delete:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+=======
+.e-profile-form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Formulaire centré */
+.e-profile-form {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  background-color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Champs du formulaire */
+.e-profile-form input,
+.e-profile-form select,
+.e-profile-form textarea {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.e-profile-form input:focus,
+.e-profile-form select:focus,
+.e-profile-form textarea:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 5px rgba(40,167,69,0.5);
+  outline: none;
+}
+
+/* Wrapper centré pour le bouton */
+.e-profile-form .form-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+/* Bouton centré et moderne */
+.e-profile-form .btn-submit {
+  background-color: #28a745; /* vert */
+  color: white;
+  border: none;
+  padding: 14px 40px;       /* large pour pro look */
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;                 /* espace symbole/texte */
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+/* Ajouter symbole ✔️ avant texte */
+.e-profile-form .btn-submit::before {
+  color: #8E24AA;
+}
+
+/* Hover du bouton */
+.e-profile-form .btn-submit:hover {
+  background-color: #218838; /* vert foncé */
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+>>>>>>> 346621df46f40a03a72849d76625f0f0161be7a0
 }
 
 

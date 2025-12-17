@@ -15,7 +15,7 @@
         display: inline-block;
         animation: pulse 2s ease-in-out 1 forwards, colorShift 4s ease-in-out 1 forwards;
     ">
-        Informations sur la réclamation
+        Reclamation Details
     </h1>
 </div>
 
@@ -38,15 +38,15 @@
         <tbody>
             
             <tr>
-                <th>Nom</th>
+                <th>Last Name</th>
                 <td>{{ reclamation.nom }}</td>
             </tr>
             <tr>
-                <th>Prenom</th>
+                <th>First Name</th>
                 <td>{{ reclamation.prenom }}</td>
             </tr>
             <tr>
-                <th>Type_reclamation</th>
+                <th>Reclamation Type</th>
                 <td>{{ reclamation.typeReclamation.value }}</td>
             </tr>
             <tr>
@@ -62,17 +62,17 @@
 
     <div class="button-group">
         <!--retour a la liste -->
-        <a href="{{ path('app_reclamation_index') }}" class="btn-custom">Retour à la Liste</a>
+        <a href="{{ path('app_reclamation_index') }}" class="btn-custom">Back to List</a>
 
         <!-- Modifier -->
-        <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn-custom">Modifier</a>
+        <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn-custom">Edit</a>
 
         <!-- Supprimer -->
         <form method="post" action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}"
               onsubmit="return confirm('Are you sure you want to delete this item?');"
               style="display:inline-block; margin:0;">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
-            <button type="submit" class="btn-custom btn-delete">Supprimer</button>
+            <button type="submit" class="btn-custom btn-delete">Delete</button>
         </form>
     </div>
 {% endblock %}
